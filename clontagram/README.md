@@ -1,6 +1,4 @@
-# Clontagram
 
-Este es el repositorio para el código de [https://clontagram.com](https://clontagram.com).
 
 ## Descripción del proyecto
 
