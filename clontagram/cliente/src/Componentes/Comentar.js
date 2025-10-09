@@ -10,6 +10,7 @@ export default function Comentar({ onSubmitComentario, mostrarError }) {
         if (enviandoComentario) {
             return;
         }
+        
 
         try {
             setEnviandoComentario(true);
