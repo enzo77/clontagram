@@ -119,7 +119,7 @@ function LoginRoutes({mostrarError, usuario }) {
                 render={(props) => (
                     <Posts
                         {...props}
-                        mostrarError={mostrarError}
+                        mostrarError={mostrarError} usuario={usuario}
                     />
                 )}
             />

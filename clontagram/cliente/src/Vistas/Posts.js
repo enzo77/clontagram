@@ -7,13 +7,15 @@ import Comentar from "../Componentes/Comentar";
 import BotonLike from "../Componentes/BotonLike";
 import RecursoNoExiste from "../Componentes/RecursoNoExiste";
 import { Link } from "react-router-dom";
+import { toggleLike, comentar } from "../Helpers/post-helpers";
 import axios from "axios";
 
-export default function PostVista({ mostrarError, match }) {
+export default function PostVista({ mostrarError, match, usuario }) {
     const postId = match.params.id;
     const [post, setpost] = useState(null);
     const [loading, setloading] = useState(true);
     const [postNoExiste, setPostNoExiste] = useState(false);
+    const [enviandoLike, setEnviandoLike] = useState(false);
 
     useEffect(() => {
         async function cargarPosts(params) {
@@ -39,6 +41,30 @@ export default function PostVista({ mostrarError, match }) {
         cargarPosts();
     }, [postId]);
 
+    async function onSubmitComentario(mensaje) {
+        const postActualizado = await comentar(post, mensaje, usuario);
+        setpost(postActualizado);
+    }
+    
+    async function onSubmitLike() {
+
+        if (enviandoLike) {
+            return;
+        }
+
+        try {
+            setEnviandoLike(true);
+            const postActualizado = await toggleLike(post);
+            setpost(postActualizado);
+            setEnviandoLike(false);
+        } catch (error) {
+            setEnviandoLike(false);
+            mostrarError("Hubo un problema actualizando el like");
+            console.log(error);
+        }
+        
+    }
+
     if (loading) {
         return (
             <div>
@@ -60,7 +86,7 @@ export default function PostVista({ mostrarError, match }) {
     return (
         <div>
             <Main center>
-                <Posts {...post} />
+                <Posts {...post} onSubmitComentario={onSubmitComentario}  onSubmitLike={onSubmitLike}/>
             </Main>
         </div>
     );
