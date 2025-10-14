@@ -17,6 +17,8 @@ import Main from "./Componentes/Main";
 import Error from "./Componentes/Error";
 import Feed from "./Vistas/Feed";
 import Posts from "./Vistas/Posts";
+import Explore from "./Vistas/Explore";
+import Perfil from "./Vistas/Perfil";
 
 initAxiosInterceptors();
 
@@ -85,11 +87,10 @@ export default function App() {
 
     return (
         <Router>
-            <Nav usuario={usuario}/>
+            <Nav usuario={usuario} />
             <Error mensaje={error} esconderError={esconderError} />
             {usuario ? (
-                <LoginRoutes mostrarError={ mostrarError } usuario={usuario} />
-                
+                <LoginRoutes mostrarError={mostrarError} usuario={usuario} />
             ) : (
                 <LogoutRoutes
                     login={login}
@@ -102,24 +103,38 @@ export default function App() {
 }
 
 //Renders está autenticado
-function LoginRoutes({mostrarError, usuario }) {
+function LoginRoutes({ mostrarError, usuario }) {
     return (
         <Switch>
-             <Route
+            <Route
                 path="/upload"
                 render={(props) => (
-                    <Upload
-                        {...props}
-                        mostrarError={mostrarError}
-                    />
+                    <Upload {...props} mostrarError={mostrarError} />
                 )}
             />
-             <Route
+            <Route
                 path="/post/:id"
                 render={(props) => (
                     <Posts
                         {...props}
-                        mostrarError={mostrarError} usuario={usuario}
+                        mostrarError={mostrarError}
+                        usuario={usuario}
+                    />
+                )}
+            />
+            <Route
+                path="/explore"
+                render={(props) => (
+                    <Explore {...props} mostrarError={mostrarError} />
+                )}
+            />
+            <Route
+                path="/perfil/:username"
+                render={(props) => (
+                    <Perfil
+                        {...props}
+                        mostrarError={mostrarError}
+                        usuario={usuario}
                     />
                 )}
             />
