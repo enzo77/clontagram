@@ -61,10 +61,11 @@ export default function Perfil({ mostrarError, usuario, match }) {
                 file,
                 config
             );
+            console.log("data", data);
             setusuarioDueñoPerfil({ ...usuarioDueñoPerfil, imagen: data.url });
-            setSubiendoImagen(false)
+            setSubiendoImagen(false);
         } catch (error) {
-            mostrarError(error.responde.data)
+            mostrarError(error.responde.data);
         }
     }
 
@@ -92,7 +93,7 @@ export default function Perfil({ mostrarError, usuario, match }) {
                 <ImagenAvatar
                     esElPerfilDeLaPersona={esElPerfilDeLaPersona}
                     usuarioDueñoPerfil={usuarioDueñoPerfil}
-                    handleImangenSeleccionada={() => 1}
+                    handleImangenSeleccionada={handleImangenSeleccionada}
                     subiendoImagen={subiendoImagen}
                 ></ImagenAvatar>
             </div>
