@@ -90,7 +90,7 @@ export default function App() {
             <Nav usuario={usuario} />
             <Error mensaje={error} esconderError={esconderError} />
             {usuario ? (
-                <LoginRoutes mostrarError={mostrarError} usuario={usuario} />
+                <LoginRoutes mostrarError={mostrarError} usuario={usuario} logout={logout} />
             ) : (
                 <LogoutRoutes
                     login={login}
@@ -103,7 +103,7 @@ export default function App() {
 }
 
 //Renders está autenticado
-function LoginRoutes({ mostrarError, usuario }) {
+function LoginRoutes({ mostrarError, usuario, logout }) {
     return (
         <Switch>
             <Route
@@ -135,6 +135,7 @@ function LoginRoutes({ mostrarError, usuario }) {
                         {...props}
                         mostrarError={mostrarError}
                         usuario={usuario}
+                        logout={logout}
                     />
                 )}
             />

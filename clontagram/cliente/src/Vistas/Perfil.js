@@ -6,7 +6,7 @@ import RecursoNoExiste from "../Componentes/RecursoNoExiste";
 import stringToColor from "string-to-color";
 import axios from "axios";
 
-export default function Perfil({ mostrarError, usuario, match }) {
+export default function Perfil({ mostrarError, usuario, match, logout }) {
     const username = match.params.username;
     const [usuarioDueñoPerfil, setusuarioDueñoPerfil] = useState(null);
     const [cargandoPerfil, setCargandoPerfil] = useState(true);
@@ -50,14 +50,14 @@ export default function Perfil({ mostrarError, usuario, match }) {
     async function handleImangenSeleccionada(evento) {
         try {
             setSubiendoImagen(true);
-            const file = evento.target.file[0];
+            const file = evento.target.files[0];
             const config = {
-                heders: {
+                headers: {
                     "Content-Type": file.type,
                 },
             };
             const { data } = await axios.post(
-                "api/usuarios/upload",
+                "/api/usuarios/upload",
                 file,
                 config
             );
@@ -65,7 +65,7 @@ export default function Perfil({ mostrarError, usuario, match }) {
             setusuarioDueñoPerfil({ ...usuarioDueñoPerfil, imagen: data.url });
             setSubiendoImagen(false);
         } catch (error) {
-            mostrarError(error.responde.data);
+            mostrarError(error.response?.data || "Error al subir la imagen");
         }
     }
 
@@ -96,6 +96,21 @@ export default function Perfil({ mostrarError, usuario, match }) {
                     handleImangenSeleccionada={handleImangenSeleccionada}
                     subiendoImagen={subiendoImagen}
                 ></ImagenAvatar>
+                <div className="Perfil__bio-container">
+                    <div className="Perfil__bio-heading">
+                        <h2 className="capitalize">
+                            {usuarioDueñoPerfil.username}
+                        </h2>
+                        {!esElPerfilDeLaPersona() && (
+                            <BotonSeguir
+                                siguiendo={usuarioDueñoPerfil.siguiendo}
+                                toggleSiguiendo={() => 1}
+                            />
+                        )}
+
+                        { esElPerfilDeLaPersona() && <BotonLogout  logout={logout}/> }
+                    </div>
+                </div>
             </div>
         </Main>
     );
@@ -144,4 +159,20 @@ function ImagenAvatar({
         );
     }
     return <div className="Perfil__img-container">{contenido}</div>;
+}
+
+function BotonSeguir({ siguiendo, toggleSiguiendo }) {
+    return (
+        <button onClick={toggleSiguiendo} className="Perfil__boton-seguir">
+            {siguiendo ? "Dejar de seguir" : "Seguir"}
+        </button>
+    );
+}
+
+function BotonLogout({ logout }) {
+    return (
+        <button className="Perfil__boton-logout" onClick={logout}>
+            Logout
+        </button>
+    );
 }
