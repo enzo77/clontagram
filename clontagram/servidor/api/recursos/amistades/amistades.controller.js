@@ -27,7 +27,7 @@ function crearAmistad(usuarioId, seguidorId) {
 }
 
 function eliminarAmistad(usuarioId, seguidorId) {
-  return Amistad.findOneAndRemove({ usuario: usuarioId, seguidor: seguidorId });
+  return Amistad.findOneAndDelete({ usuario: usuarioId, seguidor: seguidorId });
 }
 
 module.exports = {
